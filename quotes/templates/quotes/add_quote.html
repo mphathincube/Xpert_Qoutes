@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Quote - Xpert Auto Upholstery</title>
+    <!-- Add Select2 CSS from CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+</head>
+<body>
+    <h1>Create a Quote</h1>
+    {% if messages %}
+        {% for message in messages %}
+            <p style="color: {% if message.tags == 'success' %}green{% else %}red{% endif %};">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <h2>Add a New Client (Optional)</h2>
+        <p>Fill this section only if you want to add a new client. Leave blank to use an existing client.</p>
+        <p>
+            Name: <input type="text" name="name" value="{{ client_form.name.value|default_if_none:'' }}" />
+            {% if client_form.name.errors %}
+                <span style="color: red;">{{ client_form.name.errors }}</span>
+            {% endif %}
+        </p>
+        <p>
+            Email: <input type="email" name="email" value="{{ client_form.email.value|default_if_none:'' }}" />
+            {% if client_form.email.errors %}
+                <span style="color: red;">{{ client_form.email.errors }}</span>
+            {% endif %}
+        </p>
+        <p>
+            Phone: <input type="text" name="phone" value="{{ client_form.phone.value|default_if_none:'' }}" />
+            {% if client_form.phone.errors %}
+                <span style="color: red;">{{ client_form.phone.errors }}</span>
+            {% endif %}
+        </p>
+        <h2>Create a Quote</h2>
+        <p>Either select an existing client below or add a new client above.</p>
+        {{ quote_form.as_p }}
+        <button type="submit">Save Quote</button>
+    </form>
+    <!-- Add jQuery (required by Select2) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Add Select2 JS from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- Initialize Select2 -->
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                placeholder: "Search for a client...",
+                allowClear: true
+            });
+        });
+    </script>
+</body>
+</html>
